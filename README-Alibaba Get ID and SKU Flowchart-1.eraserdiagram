@@ -1,0 +1,48 @@
+flowchart-diagram
+
+title Alibaba Get ID and SKU Flowchart
+
+// Define groups for better organization
+Setup [color: lightblue] {
+  Clone Repository [icon: git-branch]
+  Navigate to Directory [icon: folder]
+  Install Dependencies [icon: package]
+  Create .env File [icon: file-text]
+}
+
+Execution [color: lightgreen] {
+  Run main.py [icon: play-circle]
+  Run productlist.py [icon: play-circle]
+  Run parse_id_sku.py [icon: play-circle]
+}
+
+Data Processing [color: lightcoral] {
+  Fetch Data from API [icon: download]
+  Log API Responses [icon: file-text]
+  Extract IDs and SKUs [icon: file-text]
+  Write to CSV [icon: file-text]
+}
+
+// Define the flow
+Start [shape: oval, icon: play] > Clone Repository
+Clone Repository > Navigate to Directory
+Navigate to Directory > Install Dependencies
+Install Dependencies > Create .env File
+Create .env File > End Setup [shape: oval, icon: check]
+
+Start Execution [shape: oval, icon: play] > Run main.py
+Run main.py > Run productlist.py
+Run productlist.py > Fetch Data from API
+Fetch Data from API > Log API Responses
+Log API Responses > Run parse_id_sku.py
+Run parse_id_sku.py > Extract IDs and SKUs
+Extract IDs and SKUs > Write to CSV
+Write to CSV > End Execution [shape: oval, icon: check]
+
+Start Data Flow [shape: oval, icon: play] > Alibaba API [icon: cloud]
+Alibaba API > Fetch Data from API
+Fetch Data from API > Log API Responses
+Log API Responses > Extract IDs and SKUs
+Extract IDs and SKUs > Write to CSV
+Write to CSV > End Data Flow [shape: oval, icon: check]
+
