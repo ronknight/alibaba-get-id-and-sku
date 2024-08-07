@@ -10,7 +10,7 @@ def run_program(program_name):
 
 if __name__ == "__main__":
     # Run productlist.py with the required arguments
-    run_program('productlist.py "" 30 1')
+    run_program('productlist.py')
 
     # Run parse_id_sku.py
     run_program('parse_id_sku.py')

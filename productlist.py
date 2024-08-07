@@ -14,14 +14,9 @@ app_key = os.getenv('APP_KEY')
 app_secret = os.getenv('APP_SECRET')
 session_key = os.getenv('SESSION_KEY')
 
-# Command-line arguments
-if len(sys.argv) != 3 or sys.argv[1] not in ['10', '20', '30']:
-    print("Usage: productlist.py <page_size> <start_page>")
-    print("Page size options: 10, 20, 30")
-    sys.exit(1)
-
-page_size = sys.argv[1]
-start_page = int(sys.argv[2])
+# Set default values
+page_size = 30
+start_page = 1
 
 # API endpoint
 url = 'https://eco.taobao.com/router/rest'
@@ -47,8 +42,16 @@ def fetch_products(page_number):
     }
     params['sign'] = calculate_sign(params, app_secret)
 
-    response = requests.post(url, data=params)
-    response_data = response.json()
+    try:
+        response = requests.post(url, data=params)
+        response.raise_for_status()  # Raise an error for HTTP issues
+        response_data = response.json()
+    except requests.RequestException as e:
+        print(f"Request error: {e}")
+        return None
+    except json.JSONDecodeError as e:
+        print(f"JSON decode error: {e}")
+        return None
 
     # Log request and response
     log_dir = 'api_logs'
@@ -84,7 +87,7 @@ def main():
         print(f"Fetching products from page {page_number}...")
         response_data = fetch_products(page_number)
 
-        if 'alibaba_icbu_product_list_response' in response_data:
+        if response_data and 'alibaba_icbu_product_list_response' in response_data:
             product_list_response = response_data['alibaba_icbu_product_list_response']
             products = product_list_response.get('products', {}).get('alibaba_product_brief_response', [])
 
@@ -101,7 +104,7 @@ def main():
 
             page_number += 1
         else:
-            print("Unexpected JSON structure: alibaba_icbu_product_list_response not found.")
+            print("Unexpected JSON structure or no response data.")
             break
 
 if __name__ == "__main__":
