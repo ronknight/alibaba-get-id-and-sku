@@ -57,13 +57,28 @@
 
 ## 🚀 Usage
 
-Run the main script:
+1. Run the main script:
 
 ```
 python main.py
 ```
 
 This will execute both `productlist.py` and `parse_id_sku.py` in sequence.
+
+2. Run the productgetall script:
+
+```
+python productgetall.py
+```
+This will processes product IDs from a CSV file and create a JSON file with all product info.
+
+3. Run the extract_not_updated_sku script:
+
+```
+python extract_not_updated_sku.py
+```
+This will identify which SKU is still not updated.
+
 
 ## 📜 Script Details
 
@@ -89,6 +104,28 @@ This will execute both `productlist.py` and `parse_id_sku.py` in sequence.
 - Runs `productlist.py` to fetch data from the API
 - Runs `parse_id_sku.py` to process the fetched data
 
+### 4. productgetall.py
+
+🚀 Fetches detailed product information for each product ID in the CSV file using the Alibaba API.
+
+- Processes product IDs from a CSV file
+- Saves all API responses and errors to a single JSON file with a progress bar display
+
+### 5. extract_product_id.py
+
+📊 Extracts product IDs, SKUs, and Alibaba product IDs from API response logs and saves them to a CSV file.
+
+- Parses API log data to extract product information using regex and JSON processing
+- Outputs a CSV file with SKUs, Product IDs, and Alibaba Product IDs for further analysis
+
+
+### 6. extract_not_updated_sku.py
+
+🔍 Identifies product IDs from API logs that are not present in the Alibaba product CSV file.
+
+- Compares product IDs from the latest JSON log file against those in the Alibaba CSV
+- Outputs a new CSV file containing product IDs found in the log but missing from the Alibaba data
+
 <!-- eraser-additional-content -->
 ## 📊 Diagrams
 
@@ -101,10 +138,16 @@ The program flow can be visualized as follows:
 3. main.py runs productlist.py
 4. productlist.py fetches data from Alibaba API
 5. API responses are logged
-6. main.py then runs parse_id_sku.py
-7. parse_id_sku.py extracts product IDs and SKUs from logs
-8. Extracted data is written to CSV
-9. End
+6. main.py runs productgetall.py
+7. productgetall.py fetches detailed product information for each product ID
+8. main.py runs extract_product_id.py
+9. extract_product_id.py extracts product IDs, SKUs, and Alibaba product IDs from logs
+10. main.py runs parse_id_sku.py
+11. parse_id_sku.py processes the fetched data
+12. Extracted data is written to CSV files
+13. main.py runs extract_not_updated_sku.py
+14. extract_not_updated_sku.py identifies not updated product IDs
+15. End
 
 ### Data Flow
 
@@ -113,8 +156,10 @@ The data flow can be represented as:
 1. Alibaba API (source of data)
 2. Data flows to productlist.py
 3. productlist.py generates API response logs
-4. Logs are processed by parse_id_sku.py
-5. parse_id_sku.py outputs data to product_id.csv
+4. productgetall.py fetches detailed product information
+5. extract_product_id.py processes logs and outputs to alibaba_product_id.csv
+6. parse_id_sku.py processes data and outputs to product_id.csv
+7. extract_not_updated_sku.py compares data and outputs to not_updated_product_ids.csv
 
 <!-- eraser-additional-files -->
 <a href="/README-Alibaba Get ID and SKU Flowchart-1.eraserdiagram" data-element-id="XTttFq5zD5Bo2v358sPiq"><img src="/.eraser/53LCLwpB7TEuHVz5qGu6___3Jivg2tjMecMlrHwbIVIBR8f7U03___---diagram----aca7057b97d8c375d6333da24af24a33-Alibaba-Get-ID-and-SKU-Flowchart.png" alt="" data-element-id="XTttFq5zD5Bo2v358sPiq" /></a>
